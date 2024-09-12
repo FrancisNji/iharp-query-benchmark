@@ -163,3 +163,60 @@ def get_mean_heatmap(
         coords={"latitude": xrds_concat.latitude, "longitude": xrds_concat.longitude},
     )
     return res
+
+
+def find_time_baseline(
+    variable: str,
+    start_datetime: str,
+    end_datetime: str,
+    time_resolution: str,  # e.g., "hour", "day", "month", "year"
+    time_agg_method: str,  # e.g., "mean", "max", "min"
+    min_lat: float,
+    max_lat: float,
+    min_lon: float,
+    max_lon: float,
+    time_series_aggregation_method: str,  # e.g., "mean", "max", "min"
+    filter_predicate: str,  # e.g., ">", "<", "==", ">=", "<="
+    filter_value: float,
+):
+    ts = get_timeseries(
+        variable,
+        start_datetime,
+        end_datetime,
+        time_resolution,
+        time_agg_method,
+        min_lat,
+        max_lat,
+        min_lon,
+        max_lon,
+        time_series_aggregation_method,
+    )
+    if filter_predicate == ">":
+        res = ts.where(ts > filter_value, drop=False)
+    elif filter_predicate == "<":
+        res = ts.where(ts < filter_value, drop=False)
+    elif filter_predicate == "==":
+        res = ts.where(ts == filter_value, drop=False)
+    elif filter_predicate == ">=":
+        res = ts.where(ts >= filter_value, drop=False)
+    elif filter_predicate == "<=":
+        res = ts.where(ts <= filter_value, drop=False)
+    return res
+
+
+def find_time_pyramid(
+    variable: str,
+    start_datetime: str,
+    end_datetime: str,
+    time_resolution: str,  # e.g., "hour", "day", "month", "year"
+    time_agg_method: str,  # e.g., "mean", "max", "min"
+    min_lat: float,
+    max_lat: float,
+    min_lon: float,
+    max_lon: float,
+    time_series_aggregation_method: str,  # e.g., "mean", "max", "min"
+    filter_predicate: str,  # e.g., ">", "<", "==", ">=", "<="
+    filter_value: float,
+):
+    # TODO:
+    pass
